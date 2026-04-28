@@ -11,7 +11,7 @@ import time
 """
 This program only maps big data centers and not edge data centers or colocation
 """
-"""
+
 def analyze_water_proximity(lat, lon, search_radius_miles=10):
     # Analyzes the distance from a specific lat/lon to the nearest rivers and lakes.
     print(f"Initializing search at Lat: {lat}, Lon: {lon}...")
@@ -167,54 +167,53 @@ for bars in [bars1, bars2]:
 plt.tight_layout()
 
 # 7. Display the plot (or save it directly to an image file for your presentation)
-# plt.show()
-# plt.savefig('water_distance_comparison.png') # Use this line instead of plt.show() if you want to save the image
-"""
+plt.show()
+plt.savefig('water_distance_comparison.png') # Use this line instead of plt.show() if you want to save the image
 
-# df = pd.read_csv("/Users/nabilmouss/Desktop/ece3600.csv")
+df = pd.read_csv("/Users/nabilmouss/Desktop/ece3600.csv")
 
-# df_filtered = df[df['state'].isin(['Texas', 'Virginia'])].copy()
+df_filtered = df[df['state'].isin(['Texas', 'Virginia'])].copy()
 
-# # 1. Define your Tier Lists (Make sure spelling matches your CSV perfectly)
-# tier_0_ops = ['Oracle', 'OpenAI', 'xAI'] # The Gigawatt builders
+# 1. Define your Tier Lists (Make sure spelling matches your CSV perfectly)
+tier_0_ops = ['Oracle', 'OpenAI', 'xAI'] # The Gigawatt builders
 
-# tier_1_ops = ['Amazon Web Services', 'Microsoft', 'Google', 'Meta']
+tier_1_ops = ['Amazon Web Services', 'Microsoft', 'Google', 'Meta']
 
-# tier_2_ops = ['Digital Realty', 'Equinix', 'Quality Technology Services', 
-#               'CyrusOne', 'CloudHQ', 'Vantage Data Centers', 'Aligned', 
-#               'DataBank', 'Databank', 'Centersquare', 'NTT', 'CoreSite', 'Flexential']
+tier_2_ops = ['Digital Realty', 'Equinix', 'Quality Technology Services', 
+              'CyrusOne', 'CloudHQ', 'Vantage Data Centers', 'Aligned', 
+              'DataBank', 'Databank', 'Centersquare', 'NTT', 'CoreSite', 'Flexential']
 
-# # 2. Create the categorization function
-# def assign_tier(row):
-#     operator = str(row['operator'])
-#     sqft = row['sqft']
+# 2. Create the categorization function
+def assign_tier(row):
+    operator = str(row['operator'])
+    sqft = row['sqft']
     
-#     # Rule 1: Check Known Operators first
-#     if pd.notna(row['operator']):
-#         if any(op in operator for op in tier_1_ops):
-#             return 'Tier 1'
-#         elif any(op in operator for op in tier_2_ops):
-#             return 'Tier 2'
-#         elif operator != 'nan': # If there is a name, but it's not in T1 or T2
-#             return 'Tier 3'
+    # Rule 1: Check Known Operators first
+    if pd.notna(row['operator']):
+        if any(op in operator for op in tier_1_ops):
+            return 'Tier 1'
+        elif any(op in operator for op in tier_2_ops):
+            return 'Tier 2'
+        elif operator != 'nan': # If there is a name, but it's not in T1 or T2
+            return 'Tier 3'
             
-#     # Rule 2: Fallback to Square Footage if operator is missing (NaN)
-#     if pd.notna(sqft):
-#         if sqft >= 400000:
-#             return 'Tier 1'
-#         elif 100000 <= sqft < 400000:
-#             return 'Tier 2'
-#         else:
-#             return 'Tier 3'
+    # Rule 2: Fallback to Square Footage if operator is missing (NaN)
+    if pd.notna(sqft):
+        if sqft >= 400000:
+            return 'Tier 1'
+        elif 100000 <= sqft < 400000:
+            return 'Tier 2'
+        else:
+            return 'Tier 3'
             
-#     # If absolutely everything is missing, assume it's small
-#     return 'Tier 3'
+    # If absolutely everything is missing, assume it's small
+    return 'Tier 3'
 
-# # 3. Apply the function to create your new Machine Learning Feature
-# df_filtered['operator_tier'] = df_filtered.apply(assign_tier, axis=1)
-# df_filtered.to_csv("/Users/nabilmouss/Desktop/ece3600_with_tiers.csv", index=False)
-# # 4. Check the results!
-# print(df_filtered['operator_tier'].value_counts())
+# 3. Apply the function to create your new Machine Learning Feature
+df_filtered['operator_tier'] = df_filtered.apply(assign_tier, axis=1)
+df_filtered.to_csv("/Users/nabilmouss/Desktop/ece3600_with_tiers.csv", index=False)
+# 4. Check the results!
+print(df_filtered['operator_tier'].value_counts())
 
 import pandas as pd
 import numpy as np
